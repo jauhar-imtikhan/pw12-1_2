@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card card-info">
+            <div class="card card-info" data-jenis="bytahun" data-nilai="<?= $maxtahun['Tahun_Terbit'] ?>" onclick="rekap_dashboard(this)">
                 <div class="card-header">
                     <div class="card-title">Tahun Penerbitan Terbanyak</div>
                 </div>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card card-warning">
+            <div class="card card-warning" data-jenis="bypenerbit" style="cursor: pointer;" data-nilai="<?= $maxpenerbit['Penerbit'] ?>" onclick="rekap_dashboard(this)">
                 <div class="card-header">
                     <div class="card-title">Penerbit Terbanyak</div>
                 </div>
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card card-danger">
+            <div class="card card-danger" onclick="rekap_dashboard(this)" data-jenis="byrak" style="cursor: pointer;" data-nilai="<?= $maxrak['Rak'] ?>">
                 <div class="card-header">
                     <div class="card-title">Rak Penampung Terbanyak</div>
                 </div>
@@ -94,6 +94,24 @@
                 </div>
             </div>
             <div class="card-body" id="rendergrafik3"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="blokjudul" style="font-size: 20px;"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="blokhasil" style="font-size: 17px;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
         </div>
     </div>
 </div>
@@ -267,5 +285,53 @@
                 data: jumlahf
             }]
         });
+    }
+
+    function rekap_dashboard(el) {
+
+        let jenis = $(el).data('jenis');
+        let nilai = $(el).data('nilai');
+
+        let judul = "";
+        if (jenis == "" || nilai == "") {
+            swal({
+                title: 'Gagal',
+                text: 'Rekap Tidak Terdeteksi!',
+                icon: 'error'
+            })
+            return;
+        }
+        $.getJSON(
+            `<?= BASEURLKU; ?>rekapdashboard/${jenis}/${nilai}`,
+            function(res) {
+                console.log(res);
+                if (res) {
+                    let data = "";
+                    let daftar = ["success", "primary", "info", "warning", "secondary", "danger", "default"];
+                    $.each(res, function(i, obj) {
+                        let color = Math.floor(Math.random() * 7);
+                        data += `<div class="alert alert-${daftar[color]}  role="alert">${obj.Judul}</div>`
+                    })
+                    $("#blokhasil").html(data);
+                    if (jenis == 'bytahun') {
+                        judul = "Rekap Buku Berdasarkan Tahun " + nilai
+                    } else if (jenis == 'bypenerbit') {
+                        judul = "Rekap Buku Berdasarkan Penerbit " + nilai
+                    } else {
+                        judul = "Rekap Buku Berdasarkan Rak " + nilai
+                    }
+
+                    $("#blokjudul").text(judul)
+                    $("#modalDetail").modal('show')
+                } else {
+                    swal({
+                        title: 'Gagal',
+                        text: 'Data Tidak Di Temukan!',
+                        icon: 'error'
+                    })
+                    $("#blokhasil").html("")
+                }
+            }
+        )
     }
 </script>

@@ -226,4 +226,14 @@ class Mdata extends Model
             return 0;
         }
     }
+
+    public function RekapDashboard($sql)
+    {
+        $dt = db_connect()->query($sql);
+        if ($dt) {
+            return $dt->getResult();
+        } else {
+            return 0;
+        }
+    }
 }

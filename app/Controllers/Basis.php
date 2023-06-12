@@ -260,4 +260,57 @@ class Basis extends BaseController
         $result = $db->query($sql)->getResultArray();
         return $this->response->setJSON($result);
     }
+
+    public function RekapDashboard($jenis = false, $nilai = false)
+    {
+        $dtx = new Mdata();
+
+        if ($jenis == "bytahun") {
+            $sql = sprintf("SELECT Judul FROM buku WHERE Tahun_Terbit = '%s'", $nilai);
+        } else if ($jenis == "bypenerbit") {
+            $sql = sprintf("SELECT Judul FROM buku_view WHERE Penerbit = '%s'", $nilai);
+        } else {
+            $sql = "SELECT Judul FROM buku WHERE Rak LIKE '" . $nilai . "%'";
+        }
+        $result = $dtx->RekapDashboard($sql);
+        echo json_encode($result);
+    }
+
+    function geTugas()
+    {
+        $sql = "SELECT Tahun_Terbit, COUNT(*) AS Jumlah FROM buku GROUP BY Tahun_Terbit ORDER BY COUNT(*) ASC ";
+        $dt = db_connect()->query($sql);
+        $sql1 = "SELECT Penerbit, COUNT(*) AS Jumlah FROM buku_view GROUP BY Penerbit ORDER BY COUNT(*) ASC ";
+        $dt_1 = db_connect()->query($sql1);
+        $sql2 = "SELECT SUBSTRING(Rak, 1, 1) AS Rak, COUNT(*) AS Jumlah FROM buku GROUP BY SUBSTRING(Rak, 1,1) ORDER BY COUNT(*) ASC ";
+        $dt_2 = db_connect()->query($sql2);
+        if ($dt || $dt_1 || $dt_2) {
+            $tahun = [];
+            foreach ($dt->getResultArray() as $das) {
+                if ($das['Jumlah'] == '1') {
+                    $tahun[] = $das['Tahun_Terbit'];
+                }
+            }
+            $rak = [];
+            foreach ($dt_2->getResultArray() as $f) {
+                if ($f['Jumlah'] == '1') {
+                    $rak[] = $f['Rak'];
+                }
+            }
+            $penerbit = [];
+            foreach ($dt_1->getResultArray() as $p) {
+                if ($p['Jumlah'] == '1') {
+                    $penerbit[] = $p['Penerbit'];
+                }
+            }
+            $datas['data'] = [
+                'tahun' => $tahun,
+                'rak' => $rak,
+                'penerbit' => $penerbit
+            ];
+            return $this->response->setJSON($datas);
+        } else {
+            return 0;
+        }
+    }
 }

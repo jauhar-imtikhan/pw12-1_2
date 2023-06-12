@@ -49,7 +49,7 @@
                 <a href="#" class="logo">
                     <img src="<?= BASEURLKU ?>writable/assets/img/logo.svg" alt="navbar brand" class="navbar-brand">
                 </a>
-                <button class="navbar-toggler sdenav-toggler ml-auto" data-toggle="collapse" type="button" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler sidenav-toggler ml-auto" data-toggle="collapse" type="button" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"><i class="icon-menu"></i></span>
                 </button>
                 <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
@@ -60,10 +60,10 @@
             <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2"></nav>
         </div>
         <div class="sidebar sidebar-style-2">
-            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="scroll-wrapper sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content">
                     <ul class="nav nav-primary">
-                        <li class="nav-item" id="mnberanda"><a href="<?= BASEURLKU ?>beranda"><i class="icon-layers"></i>
+                        <li class="nav-item" id="mnberanda"><a href="<?= BASEURLKU ?>"><i class="icon-layers"></i>
                                 <p>Beranda</p>
                             </a></li>
                         <li class="nav-item" id="mndata"><a href="<?= BASEURLKU ?>bookdata"><i class="icon-note"></i>
@@ -72,7 +72,7 @@
                         <li class="nav-item" id="mntentang"><a href="<?= BASEURLKU ?>about"><i class="icon-tag"></i>
                                 <p>Tentang</p>
                             </a></li>
-                        <li class="nav-item" id="mntentang"><a href="<?= BASEURLKU ?>tugas"><i class="icon-tag"></i>
+                        <li class="nav-item" id="mntugas"><a href="<?= BASEURLKU ?>tugas"><i class="icon-tag"></i>
                                 <p>Tugas</p>
                             </a></li>
                         <li class="nav-item" id="mnproduct"><a href="<?= BASEURLKU ?>barang"><i class="fa fa-box"></i>

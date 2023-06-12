@@ -2,8 +2,8 @@
     <div class="page-inner py-5">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
             <div>
-                <h2 class="text-white pb-2 fw-bold">Beranda</h2>
-                <h5 class="text-white op-7 mb-2">Halaman Beranda Informasi Sistem</h5>
+                <h2 class="text-white pb-2 fw-bold">Tugas</h2>
+                <h5 class="text-white op-7 mb-2">Halaman Tugas Informasi Sistem</h5>
             </div>
         </div>
     </div>
@@ -59,7 +59,53 @@
             </div>
         </div>
     </div>
+    <div class="table-responsive">
+        <table class="table table-hover" id="table-2">
+            <thead class="thead-light">
+                <tr>
+                    <th>Tahun Penerbitan Tersedikit</th>
+                    <th>Jumlah Penerbit Tersedikit</th>
+                    <th>Jumlah Rak Penampungan Tersedikit</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
 <script>
-    $("#mnberanda").addClass("active")
+    $("#mntugas").addClass("active")
+    let table = $('#table-2').DataTable()
+    $(document).ready(function() {
+        $.ajax({
+            url: '<?= BASEURLKU ?>getTugas',
+            method: 'GET',
+            success: function(res) {
+                // console.log(res);
+                var tbody = $('#table-2 tbody');
+                tbody.empty();
+                const DATA = $.map(res.data, function(obj) {
+                    let string = {
+                        tahun: obj.tahun_tersedikit,
+                        penerbit: obj.penerbit_tersedikit,
+                        rak: obj.rak_tersedikit
+                    }
+                    return string
+                })
+                $.each(res, function(i, key) {
+                    console.log(key);
+                    $.each(key.tahun, function(k, o) {
+                        let row = $('<tr>')
+                        row.append($('<td>').text(o))
+                        row.append($('<td>').text(key.rak))
+                        row.append($('<td>').text(key.penerbit))
+                        tbody.append(row)
+                    })
+
+                })
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
+    })
 </script>
